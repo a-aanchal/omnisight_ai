@@ -30,7 +30,7 @@ function VideoUpload() {
     try {
       setLoading(true);
       const response = await uploadVideo(videoFile);
-      const videoUrl = "http://localhost:8000/" + response.output_path;
+      const videoUrl = "https://omnisight-ai-owr3.onrender.com/" + response.output_path;
       setProcessedVideo(videoUrl);
     } catch (error) {
       console.error("Video processing error:", error);

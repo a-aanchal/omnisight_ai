@@ -12,7 +12,7 @@ Example:
 "/detect/video" → http://localhost:8000/api/v1/detect/video
 */
 const API = axios.create({
-  baseURL: "http://localhost:8000/api/v1",
+  baseURL: "https://omnisight-ai-owr3.onrender.com/api/v1",
 });
 
 
