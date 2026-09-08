@@ -30,11 +30,13 @@ dist/
 
 # FastAPI / Backend
 
-# ==============================
-
-
-
-
+# ==============================# Temporary files & video cache
+backend/temp/input/*
+backend/temp/output/*
+!backend/temp/input/.gitkeep
+!backend/temp/output/.gitkeep
+!backend/temp/input/samplefile.txt
+!backend/temp/output/samplefile.txt
 # Cache
 
 .cache/
