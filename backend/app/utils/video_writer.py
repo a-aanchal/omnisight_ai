@@ -2,35 +2,41 @@ import cv2
 
 
 class VideoWriter:
-
     def __init__(self, output_path, fps, width, height):
         """
-        Initialize video writer
-
-        Using H264 codec so the video plays correctly
-        inside browser HTML5 video players.
+        Initialize video writer with automatic codec fallback.
+        Ensures video is correctly encoded across environments.
         """
+        # Ensure valid FPS
+        if not fps or fps <= 0 or fps > 120:
+            fps = 30.0
 
-        # Use browser-compatible codec
-        fourcc = cv2.VideoWriter_fourcc(*"avc1")
+        codecs = ["mp4v", "avc1", "XVID", "MJPG"]
+        self.writer = None
+        self.output_path = output_path
 
-        self.writer = cv2.VideoWriter(
-            output_path,
-            fourcc,
-            fps,
-            (width, height)
-        )
+        for codec in codecs:
+            fourcc = cv2.VideoWriter_fourcc(*codec)
+            writer = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+            if writer.isOpened():
+                self.writer = writer
+                break
 
+        if self.writer is None or not self.writer.isOpened():
+            # Ultimate fallback to default fourcc -1 or mp4v
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            self.writer = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
     def write_frame(self, frame):
         """
-        Write processed frame to video
+        Write processed frame to video file
         """
-        self.writer.write(frame)
-
+        if self.writer and self.writer.isOpened():
+            self.writer.write(frame)
 
     def release(self):
         """
         Release writer and finalize video file
         """
-        self.writer.release()
+        if self.writer:
+            self.writer.release()
